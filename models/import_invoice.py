@@ -35,21 +35,14 @@ class ImportInvoice(osv.osv_memory):
 		reader = csv.DictReader(StringIO.StringIO(contents))
 
 		for row in reader:
-			#JUNED: bukan kebiasaan baik untuk langsung mengakses key dict dengan []
-			#khususnya karena ini hasil baca dari file yang kita ngga tau gimana cara generatenya.
-			#alih2, gunakan row.get('InvoiceNumber', False) artinya coba ambil key InvoiceNumber
-			#dari dict row, kalau ngga ada key itu maka hasilnya False (well kamu bisa taruh 
-			#nilai apapun yang bermakna False sebagai ganti False)
-			if not row or not row['InvoiceNumber']: continue
+			if not row.get('InvoiceNumber', False): continue
+			if not row.get('Status', '').lower() == "paid": continue
 
-			if not row['Status'].lower() == "paid": continue
-			#JUNEd: tampung dulu self.pool.get('account.invoice') ke variabel, seperti contoh ini
-			#invoice_obj = self.pool.get('account.invoice')
-			#baru dipake di bawah2nya
-			invoice_ids = self.pool.get('account.invoice').search(cr, uid, [
+			invoice_obj = self.pool.get('account.invoice')
+			invoice_ids = invoice_obj.search(cr, uid, [
 				('number', '=', row['InvoiceNumber'])
 			])
 
 			if not invoice_ids: continue
-			obj = self.pool.get('account.invoice').browse(cr, uid, invoice_ids[0], context=context)
+			obj = invoice_obj.browse(cr, uid, invoice_ids[0], context=context)
 			obj.state = 'paid'
