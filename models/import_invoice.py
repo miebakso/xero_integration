@@ -40,7 +40,7 @@ class ImportInvoice(osv.osv_memory):
 
 			invoice_obj = self.pool.get('account.invoice')
 			invoice_ids = invoice_obj.search(cr, uid, [
-				('number', '=', row['InvoiceNumber'])
+				('number', '=', row.get('InvoiceNumber', False))
 			])
 
 			if not invoice_ids: continue
