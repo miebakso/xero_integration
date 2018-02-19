@@ -1,0 +1,6 @@
+<openerp>
+	<data>
+		<menuitem id="xero_integration_menu_root" name="XERO Integration" sequence="20" />
+		<menuitem id="xero_integration_invoices_root" name="Invoices" sequence="1" parent="xero_integration_menu_root" />
+	</data>
+</openerp>

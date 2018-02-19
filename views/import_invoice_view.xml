@@ -1,0 +1,35 @@
+<openerp>
+	<data>
+
+		<!-- IMPORT INVOICE ================================================================================================ -->
+
+			<record id="xero_integration_import_invoice_form" model="ir.ui.view">
+				<field name="name">xero.integration.import.invoice.form</field>
+				<field name="model">xero.integration.import.invoice</field>
+				<field name="arch" type="xml">
+					<form>
+						<group>
+							<field name="invoices_filename" invisible="1" />
+							<field name="invoices" filename="invoices_filename" />
+						</group>
+						<footer>
+							<!-- JUNED: tambahin button cancel -->
+							<button string="Upload" type="object" name="import_invoice" class="oe_highlight" />
+						</footer>
+					</form>
+				</field>
+			</record>
+
+			<record id="xero_integration_action_import_invoice" model="ir.actions.act_window">
+				<!-- JUNED: saya tambahin XERO supaya jelas aja -->
+				<field name="name">Import XERO Invoice</field>
+				<field name="res_model">xero.integration.import.invoice</field>
+				<field name="view_type">form</field>
+				<field name="view_mode">form</field>
+				<field name="target">new</field>
+			</record>
+
+			<menuitem id="xero_integration_menu_import_invoices" sequence="1" parent="xero_integration_invoices_root" action="xero_integration_action_import_invoice" />
+
+	</data>
+</openerp>
