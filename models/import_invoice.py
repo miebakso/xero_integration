@@ -46,3 +46,23 @@ class ImportInvoice(osv.osv_memory):
 			if not invoice_ids: continue
 			obj = invoice_obj.browse(cr, uid, invoice_ids[0], context=context)
 			obj.state = 'paid'
+
+# ==========================================================================================================================
+
+class franchisee_bill(osv.osv_memory):
+
+	_inherit = "franchisee.bill"
+
+	def create(self, cr, uid, vals, context=None):
+		new_data = super(franchisee_bill, self).create(vals)
+		generate_xero_invoice(new_data)
+		return new_data
+
+	def generate_xero_invoice(self, data):
+		with open('C:\OpenSSL-Win64\bin\publicket.cer') as keyfile:
+			rsa_key = keyfile.read()
+
+		credentials = PrivateCredentials('FK7YJD6MEXFNQRYFDJ0TBFGDFXQPLT', rsa_key)
+		xero = Xero(credentials)
+		
+		xero.invoices.save(data)

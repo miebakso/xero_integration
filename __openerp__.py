@@ -9,7 +9,9 @@
 	'maintainer': 'Edrick',
 	'sequence': 150,
 	'depends': [
-		'base','account',
+		'base',
+		'account',
+		'franchisee',
 	],
 	'data': [
 		'views/xero_integration.xml',
