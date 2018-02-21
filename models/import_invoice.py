@@ -59,10 +59,12 @@ class franchisee_bill(osv.osv_memory):
 		return new_data
 
 	def generate_xero_invoice(self, data):
-		with open('C:\OpenSSL-Win64\bin\publicket.cer') as keyfile:
+		with open('C:\OpenSSL\bin\publickey.cer') as keyfile:
 			rsa_key = keyfile.read()
 
-		credentials = PrivateCredentials('FK7YJD6MEXFNQRYFDJ0TBFGDFXQPLT', rsa_key)
+		credentials = PrivateCredentials('XHTKCYJGSUC1TM8AXQBRCKAGPKDZ5W', rsa_key)
 		xero = Xero(credentials)
-		
+		invoice = {
+			'name' : 'test'
+		}
 		xero.invoices.save(data)
