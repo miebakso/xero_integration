@@ -2,10 +2,8 @@ import base64, csv, StringIO
 from openerp.osv import osv, fields
 from openerp.exceptions import ValidationError
 
-# ==========================================================================================================================
 
-class AccountInvoice(osv.osv):
-	_inherit = "account.invoice"
+
 
 # ==========================================================================================================================
 
@@ -47,24 +45,4 @@ class ImportInvoice(osv.osv_memory):
 			obj = invoice_obj.browse(cr, uid, invoice_ids[0], context=context)
 			obj.state = 'paid'
 
-# ==========================================================================================================================
 
-class franchisee_bill(osv.osv_memory):
-
-	_inherit = "franchisee.bill"
-
-	def create(self, cr, uid, vals, context=None):
-		new_data = super(franchisee_bill, self).create(vals)
-		generate_xero_invoice(new_data)
-		return new_data
-
-	def generate_xero_invoice(self, data):
-		with open('C:\OpenSSL\bin\publickey.cer') as keyfile:
-			rsa_key = keyfile.read()
-
-		credentials = PrivateCredentials('XHTKCYJGSUC1TM8AXQBRCKAGPKDZ5W', rsa_key)
-		xero = Xero(credentials)
-		invoice = {
-			'name' : 'test'
-		}
-		xero.invoices.save(data)
